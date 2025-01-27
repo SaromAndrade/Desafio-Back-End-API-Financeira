@@ -1,0 +1,71 @@
+# Compiled object files, binaries, and generated files
+bin/
+obj/
+out/
+*.dll
+*.exe
+*.app
+*.so
+*.dylib
+*.pdb
+*.cache
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Visual Studio specific folders and files
+.vs/
+*.vscode/
+
+# Configuration files
+*.config
+*.env
+appsettings*.json
+
+# Log files
+*.log
+
+# Package directories and dependencies
+packages/
+node_modules/
+wwwroot/lib/
+
+# Build artifacts
+*.publish/
+*.class
+*.csproj.user
+
+# IDE-specific folders and files
+.idea/
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker-related
+**/docker-compose.override.yml
+docker-compose.*
+
+# Azure-related
+local.settings.json
+
+# NuGet package directories
+*.nupkg
+.nuget/
+project.lock.json
+project.fragment.lock.json
+
+# Other backups and temporary files
+*.bak
+*.tmp
+~$*
+
+# JetBrains Rider specific
+.idea/
+.idea_modules/
+.idea.workspace/
