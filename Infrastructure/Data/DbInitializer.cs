@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Core;
+using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +23,12 @@ namespace Infrastructure.Data
                 new User
                     {
                         Name = "João Silva",
-                        PasswordHash = "hashedpassword123" // Use um hash real em produção
+                        PasswordHash = PasswordHelper.HashPassword("hashedpassword123")
                     },
                 new User
                     {
                         Name = "Maria Oliveira",
-                        PasswordHash = "hashedpassword456" // Use um hash real em produção
+                        PasswordHash = PasswordHelper.HashPassword("hashedpassword456") // Use um hash real em produção
                     }
             };
 
