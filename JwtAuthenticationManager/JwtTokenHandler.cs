@@ -11,12 +11,12 @@ namespace JwtAuthenticationManager
     {
         public const string JWT_SECURITY_KEY = "PQxkc9Y4xHGvFKLqWCAnfmJ23wJ-b9ucKxBA-UylF8WVN8XEcdh8Udz0jTTnbPB-BpbEfVzQkqJ4YPmn2ZPElA";
         private const int JWT_TOKEN_VALIDITY_MINS = 20;
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public JwtTokenHandler()
+        public JwtTokenHandler(IUnitOfWork unitOfWork)
         {
-
+            _unitOfWork = unitOfWork;
         }
         public async Task<AuthenticationResponse?> GenerateJwtTokenAsync(AuthenticationRequest authenticationRequest)
         {
@@ -25,13 +25,13 @@ namespace JwtAuthenticationManager
                 return null;
 
             // Valida o nome de usuário e a senha, e obtém o usuário
-            var user = await _userRepository.ValidateUserAsync(authenticationRequest.UserName, authenticationRequest.Password);
+            var user = await _unitOfWork.UserRepository.ValidateUserAsync(authenticationRequest.UserName, authenticationRequest.Password);
             if (user == null)
             {
                 return null; // Credenciais inválidas
             }
 
-            var tokenExpiryTimeStamp = DateTime.Now.AddMinutes(JWT_TOKEN_VALIDITY_MINS);
+            var tokenExpiryTimeStamp = DateTime.UtcNow.AddMinutes(JWT_TOKEN_VALIDITY_MINS);
             var tokenKey = Encoding.ASCII.GetBytes(JWT_SECURITY_KEY);
             var claimsIdentity = new ClaimsIdentity(new List<Claim>
             {
@@ -46,6 +46,7 @@ namespace JwtAuthenticationManager
             {
                 Subject = claimsIdentity,
                 Expires = tokenExpiryTimeStamp,
+                NotBefore = DateTime.UtcNow,
                 SigningCredentials = signingCredentials
             };
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
@@ -55,7 +56,7 @@ namespace JwtAuthenticationManager
             return new AuthenticationResponse
             {
                 Username = authenticationRequest.UserName,
-                ExpiresIn = (int)tokenExpiryTimeStamp.Subtract(DateTime.Now).TotalSeconds,
+                ExpiresIn = (int)tokenExpiryTimeStamp.Subtract(DateTime.UtcNow).TotalSeconds,
                 JwtToken = token,
             };
         }

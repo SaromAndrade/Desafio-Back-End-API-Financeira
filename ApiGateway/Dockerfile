@@ -11,20 +11,19 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["AuthenticationWebApi/AuthenticationWebApi.csproj", "AuthenticationWebApi/"]
-COPY ["JwtAuthenticationManager/JwtAuthenticationManager.csproj", "JwtAuthenticationManager/"]
-RUN dotnet restore "./AuthenticationWebApi/AuthenticationWebApi.csproj"
+COPY ["ApiGateway/ApiGateway.csproj", "ApiGateway/"]
+RUN dotnet restore "./ApiGateway/ApiGateway.csproj"
 COPY . .
-WORKDIR "/src/AuthenticationWebApi"
-RUN dotnet build "./AuthenticationWebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/ApiGateway"
+RUN dotnet build "./ApiGateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Esta fase é usada para publicar o projeto de serviço a ser copiado para a fase final
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./AuthenticationWebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./ApiGateway.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Esta fase é usada na produção ou quando executada no VS no modo normal (padrão quando não está usando a configuração de Depuração)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AuthenticationWebApi.dll"]
+ENTRYPOINT ["dotnet", "ApiGateway.dll"]
