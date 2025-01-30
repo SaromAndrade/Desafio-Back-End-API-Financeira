@@ -5,7 +5,9 @@
       "commandVersion": "1.0",
       "serviceActions": {
         "authenticationwebapi": "StartDebugging",
-        "apigateway": "StartDebugging"
+        "apigateway": "StartDebugging",
+        "usermanagementwebapi": "StartDebugging",
+        "walletwebapi": "StartDebugging"
       }
     }
   }

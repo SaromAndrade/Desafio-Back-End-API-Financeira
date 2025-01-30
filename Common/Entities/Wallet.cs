@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -17,10 +18,12 @@ namespace Core.Entities
         public decimal Balance { get; set; } = 0; // Saldo inicial
 
         [Required]
-        public int UserId { get; set; } // Chave estrangeira para o usuário
+        public int UserId { get; set; }
 
-        public User User { get; set; } // Relacionamento 1:1 com o usuário
+        [JsonIgnore] 
+        public User User { get; set; }
 
-        public ICollection<Transaction> Transactions { get; set; } // Relacionamento 1:N com transações
+        [JsonIgnore]
+        public ICollection<Transaction> Transactions { get; set; }
     }
 }

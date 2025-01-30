@@ -10,7 +10,55 @@
         }
       ],
       "UpstreamPathTemplate": "/gateway/authentication",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/register",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "usermanagementwebapi",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/User/register",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Wallet/user/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "walletwebapi",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/Wallet/User/{userId}",
+      "UpstreamHttpMethod": [ "POST", "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Wallet/deposit",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "walletwebapi",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/Wallet/deposit",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Wallet/transfer",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "walletwebapi",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/Wallet/transfer",
+      "UpstreamHttpMethod": [ "POST" ]
     }
   ],
   "GlobalConfiguration": {

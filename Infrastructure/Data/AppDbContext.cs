@@ -15,6 +15,11 @@ namespace Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Definir índice único para a coluna Name da entidade User
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Name)
+                .IsUnique();
+
             // Configuração do relacionamento 1:1 entre User e Wallet
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Wallet)

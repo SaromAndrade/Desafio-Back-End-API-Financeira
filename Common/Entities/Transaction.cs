@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Core.Entities
@@ -20,13 +21,16 @@ namespace Core.Entities
 
         [Required]
         public int WalletId { get; set; } // Chave estrangeira para a carteira
-
+        [JsonIgnore]
         public Wallet Wallet { get; set; } // Relacionamento N:1 com a carteira
 
         public int? SenderUserId { get; set; } // Usuário que enviou a transferência (opcional)
+        [JsonIgnore]
         public User SenderUser { get; set; } // Relacionamento N:1 com o usuário remetente
 
         public int? ReceiverUserId { get; set; } // Usuário que recebeu a transferência (opcional)
+
+        [JsonIgnore] 
         public User ReceiverUser { get; set; } // Relacionamento N:1 com o usuário destinatário
 
         [Required]

@@ -8,6 +8,8 @@ namespace Infrastructure
     {
         private readonly AppDbContext _context;
         private IUserRepository _userRepository;
+        private IWalletRepository _walletRepository;
+        private ITransactionRepository _transactionRepository;  
 
         public UnitOfWork(AppDbContext context)
         {
@@ -22,6 +24,10 @@ namespace Infrastructure
 
         // Implementação do repositório específico
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
+
+        public IWalletRepository WalletRepository => _walletRepository ??= new WalletRepository(_context);
+
+        public ITransactionRepository TransactionRepository => _transactionRepository ??= new TransactionRepository(_context);
 
         // Método para salvar as alterações no banco de dados
         public async Task<int> CompleteAsync()

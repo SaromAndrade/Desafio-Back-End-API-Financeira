@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Core.Entities
 {
@@ -13,8 +14,9 @@ namespace Core.Entities
 
         [Required]
         [StringLength(100)]
-        public string PasswordHash { get; set; } // Senha criptografada
+        public string PasswordHash { get; set; }
 
+        [JsonIgnore] 
         public Wallet Wallet { get; set; }
     }
 }

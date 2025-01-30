@@ -24,12 +24,24 @@ namespace Infrastructure.Repositories
         {
             // Criptografa a senha antes de adicionar o usuário
             user.PasswordHash = PasswordHelper.HashPassword(user.PasswordHash);
+            try
+            {
+                // Chama o método AddAsync sobrescrito
+                await AddAsync(user);
 
-            // Chama o método AddAsync sobrescrito
-            await AddAsync(user);
-
-            // Salva as alterações no banco de dados
-            await _context.SaveChangesAsync();
+                // Salva as alterações no banco de dados
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Verifica se o erro foi causado por uma violação de UNIQUE CONSTRAINT
+                if (ex.InnerException?.Message.Contains("unique") == true)
+                {
+                    throw new InvalidOperationException("O nome de usuário já está em uso.");
+                }
+                // Se for outro erro, relança a exceção original
+                throw;
+            }
         }
 
         public async Task<User?> ValidateUserAsync(string username, string password)
@@ -47,6 +59,10 @@ namespace Infrastructure.Repositories
             bool isPasswordValid = PasswordHelper.VerifyPassword(password, user.PasswordHash);
 
             return isPasswordValid ? user : null; // Retorna o usuário se a senha for válida
+        }
+        public async Task<bool> ExistsAsync(int userId)
+        {
+            return await _context.Users.AnyAsync(u => u.Id == userId);
         }
     }
 }

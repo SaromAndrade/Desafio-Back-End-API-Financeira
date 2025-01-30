@@ -12,6 +12,8 @@ namespace Core.Interfaces
         IRepository<T> Repository<T>() where T : class;
 
         IUserRepository UserRepository { get; }
+        IWalletRepository WalletRepository { get; }
+        ITransactionRepository TransactionRepository { get; }
 
         Task<int> CompleteAsync();
     }

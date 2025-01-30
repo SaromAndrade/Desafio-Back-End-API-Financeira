@@ -12,5 +12,6 @@ namespace Core.Interfaces
         // Valida a senha do usuário
         Task<User?> ValidateUserAsync(string username, string password);
         Task AddUserAsync(User user);
+        Task<bool> ExistsAsync(int userId);
     }
 }
