@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,9 @@ namespace Core.Interfaces
 
         // Obtém todas as entidades
         Task<IEnumerable<T>> GetAllAsync();
+
+        // Obtém todas as entidades de acordo com a Expression
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null);
 
         // Adiciona uma entidade
         Task AddAsync(T entity);

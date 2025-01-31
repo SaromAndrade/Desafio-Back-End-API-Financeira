@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using WalletWebApi.Models;
 
 namespace WalletWebApi.Service
@@ -23,19 +24,15 @@ namespace WalletWebApi.Service
         } 
         public async Task<IEnumerable<Transaction>> GetUserTransfersAsync(TransferFilterRequest request)
         {
-            var wallet = await GetWalletByUserIdAsync(request.UserId);
-
-            var query = _unitOfWork.TransactionRepository
-                .GetQueryable()
-                .Where(t => t.SenderUserId == request.UserId && t.Type == TransactionType.Transfer);
+            Expression<Func<Transaction, bool>> filter = t => t.SenderUserId == request.UserId && t.Type == TransactionType.Transfer;
 
             if (request.StartDate.HasValue)
-                query = query.Where(t => t.TransactionDate >= request.StartDate.Value);
+                filter = filter.And(t => t.TransactionDate >= request.StartDate.Value);
 
             if (request.EndDate.HasValue)
-                query = query.Where(t => t.TransactionDate <= request.EndDate.Value);
+                filter = filter.And(t => t.TransactionDate <= request.EndDate.Value);
 
-            return await query.ToListAsync();
+            return await _unitOfWork.TransactionRepository.GetAllAsync(filter);
         }
     }
 }

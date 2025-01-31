@@ -59,6 +59,18 @@
       ],
       "UpstreamPathTemplate": "/gateway/Wallet/transfer",
       "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Wallet/transfers/list",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "walletwebapi",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/Wallet/transfers/list",
+      "UpstreamHttpMethod": [ "POST" ]
     }
   ],
   "GlobalConfiguration": {

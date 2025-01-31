@@ -32,6 +32,7 @@ namespace WalletWebApi.Controllers
             return Ok(wallet);
         }
         [HttpPost("user/{userId}")]
+        [Authorize]
         public async Task<IActionResult> CreateWallet(int userId)
         {
             // Verifica se o usuário existe
@@ -53,6 +54,7 @@ namespace WalletWebApi.Controllers
             return Ok(wallet);
         }
         [HttpPost("deposit")]
+        [Authorize]
         public async Task<IActionResult> Deposit([FromBody] DepositRequest request)
         {
             try
@@ -83,6 +85,7 @@ namespace WalletWebApi.Controllers
             }
         }
         [HttpPost("transfer")]
+        [Authorize]
         public async Task<IActionResult> Transfer([FromBody] TransferRequest request)
         {
             try
@@ -125,6 +128,7 @@ namespace WalletWebApi.Controllers
             }
         }
         [HttpPost("transfers/list")]
+        [Authorize]
         public async Task<IActionResult> GetUserTransfers([FromBody] TransferFilterRequest request)
         {
             try
