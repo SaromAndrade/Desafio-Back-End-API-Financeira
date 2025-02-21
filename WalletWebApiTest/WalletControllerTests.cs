@@ -204,5 +204,36 @@ namespace WalletWebApiTest
 
             Assert.Equal(expectedJson, json);
         }
+
+        [Fact]
+        public async Task Transfer_ValidRequest_ReturnsOkResult()
+        {
+            // Arrange
+            var request = new TransferRequest
+            {
+                SenderUserId = 1,
+                ReceiverUserId = 2,
+                Amount = 100
+            };
+
+            var senderWallet = new Wallet { Id = 1, UserId = 1, Balance = 200 };
+            var receiverWallet = new Wallet { Id = 2, UserId = 2, Balance = 50 };
+
+            _walletServiceMock.Setup(x => x.GetWalletByUserIdAsync(request.SenderUserId)).ReturnsAsync(senderWallet);
+            _walletServiceMock.Setup(x => x.GetWalletByUserIdAsync(request.ReceiverUserId)).ReturnsAsync(receiverWallet);
+
+            _unitOfWorkMock.Setup(x => x.TransactionRepository.AddAsync(It.IsAny<Transaction>())).Returns(Task.CompletedTask);
+            _unitOfWorkMock.Setup(x => x.CompleteAsync()).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _walletController.Transfer(request);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var response = okResult.Value as dynamic;
+            Assert.Equal("Transferência realizada com sucesso.", response.Message);
+            Assert.Equal(100, response.SenderNewBalance);
+            Assert.Equal(150, response.ReceiverNewBalance);
+        }
     }
 }
